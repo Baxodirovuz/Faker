@@ -11,9 +11,6 @@ import java.time.YearMonth;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.BiFunction;
-
-import static dev.jlkesh.seeder.FieldType.*;
-
 public class FakerApplicationService {
 
     private static final Scanner scanner = new Scanner(System.in);
@@ -27,41 +24,41 @@ public class FakerApplicationService {
     private static final RandomService random = faker.random();
     private static final PhoneNumber phoneNumber = faker.phoneNumber();
     public static final Map<FieldType, BiFunction<Integer, Integer, Object>> functions = new HashMap<>() {{
-        put(ID, (a, b) -> id.incrementAndGet());
-        put(UUID, (a, b) -> java.util.UUID.randomUUID());
-        put(BOOK_TITLE, (a, b) -> book.title());
-        put(BOOT_AUTHOR, (a, b) -> book.author());
-        put(POST_TITLE, (a, b) -> String.join(" ", lorem.words(random.nextInt(a, b))));
-        put(POST_BODY, (a, b) -> String.join("", lorem.paragraphs(random.nextInt(a, b))));
-        put(FIRSTNAME, (a, b) -> name.firstName());
-        put(LASTNAME, (a, b) -> name.lastName());
-        put(USERNAME, (a, b) -> name.username());
-        put(FULLNAME, (a, b) -> name.fullName());
-        put(BLOOD_GROUP, (a, b) -> name.bloodGroup());
-        put(EMAIL, (a, b) -> name.username() + "@" + ( random.nextBoolean() ? "gmail.com" : "mail.ru" ));
-        put(GENDER, (a, b) -> random.nextBoolean() ? "MALE" : "FEMALE");
-        put(PHONE, (a, b) -> phoneNumber.cellPhone());
-        put(LOCAlDATE, (a, b) -> {
+        put(FieldType.ID, (a, b) -> id.incrementAndGet());
+        put(FieldType.UUID, (a, b) -> java.util.UUID.randomUUID());
+        put(FieldType.BOOK_TITLE, (a, b) -> book.title());
+        put(FieldType.BOOT_AUTHOR, (a, b) -> book.author());
+        put(FieldType.POST_TITLE, (a, b) -> String.join(" ", lorem.words(random.nextInt(a, b))));
+        put(FieldType.POST_BODY, (a, b) -> String.join("", lorem.paragraphs(random.nextInt(a, b))));
+        put(FieldType.FIRSTNAME, (a, b) -> name.firstName());
+        put(FieldType.LASTNAME, (a, b) -> name.lastName());
+        put(FieldType.USERNAME, (a, b) -> name.username());
+        put(FieldType.FULLNAME, (a, b) -> name.fullName());
+        put(FieldType.BLOOD_GROUP, (a, b) -> name.bloodGroup());
+        put(FieldType.EMAIL, (a, b) -> name.username() + "@" + ( random.nextBoolean() ? "gmail.com" : "mail.ru" ));
+        put(FieldType.GENDER, (a, b) -> random.nextBoolean() ? "MALE" : "FEMALE");
+        put(FieldType.PHONE, (a, b) -> phoneNumber.cellPhone());
+        put(FieldType.LOCAlDATE, (a, b) -> {
             int year = random.nextInt(1900, Year.now().getValue() - 1);
             int month = random.nextInt(1, 12);
             YearMonth yearMonth = YearMonth.of(year, month);
             int day = random.nextInt(1, yearMonth.getMonth().length(yearMonth.isLeapYear()));
             return LocalDate.of(year, month, day);
         });
-        put(COUNTRY_CODE, (a, b) -> country.countryCode3());
-        put(COUNTRY_ZIP_CODE, (a, b) -> address.zipCode());
-        put(CAPITAL, (a, b) -> country.capital());
-        put(WORD, (a, b) -> lorem.word());
-        put(WORDS, (a, b) -> lorem.words(random.nextInt(a, b)));
-        put(PARAGRAPH, (a, b) -> lorem.paragraph());
-        put(PARAGRAPHS, (a, b) -> lorem.paragraphs(random.nextInt(a, b)));
-        put(AGE, random :: nextInt);
-        put(RANDOM_INT, random :: nextInt);
-        put(LETTERS, (a, b) -> lorem.characters(a, b, true));
+        put(FieldType.COUNTRY_CODE, (a, b) -> country.countryCode3());
+        put(FieldType.COUNTRY_ZIP_CODE, (a, b) -> address.zipCode());
+        put(FieldType.CAPITAL, (a, b) -> country.capital());
+        put(FieldType.WORD, (a, b) -> lorem.word());
+        put(FieldType.WORDS, (a, b) -> lorem.words(random.nextInt(a, b)));
+        put(FieldType.PARAGRAPH, (a, b) -> lorem.paragraph());
+        put(FieldType.PARAGRAPHS, (a, b) -> lorem.paragraphs(random.nextInt(a, b)));
+        put(FieldType.AGE, random :: nextInt);
+        put(FieldType.RANDOM_INT, random :: nextInt);
+        put(FieldType.LETTERS, (a, b) -> lorem.characters(a, b, true));
     }};
 
     public static final List<FieldType> BLACK_LIST = List.of(
-            AGE, WORDS, PARAGRAPHS, RANDOM_INT, POST_TITLE, POST_BODY, LETTERS
+            FieldType.AGE, FieldType.WORDS, FieldType.PARAGRAPHS, FieldType.RANDOM_INT, FieldType.POST_TITLE, FieldType.POST_BODY, FieldType.LETTERS
     );
 
     public String processRequest(FakerApplicationGenerateRequest fakerApplicationGenerateRequest) {
